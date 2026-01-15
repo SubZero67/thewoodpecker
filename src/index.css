@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Thewoodpecker brand colors */
+:root {
+  --bg: #f5f3ef;
+  --text: #1e1e1e;
+  --accent: #c6a15b;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "Poppins", system-ui, sans-serif;
+}
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+
+p {
+  line-height: 1.7;
+}
+
+section {
+  scroll-margin-top: 100px;
+}
