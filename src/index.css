@@ -23,3 +23,14 @@ p {
 section {
   scroll-margin-top: 100px;
 }
+/* Horizontal gallery scrollbar styling */
+::-webkit-scrollbar {
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

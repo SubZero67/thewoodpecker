@@ -80,6 +80,8 @@ function Projects() {
     { type: "image", src: model6, title: "3D Model Render 6", category: "3D Models" },
   ]
 
+ const categories = ["Living", "Bedroom", "Kitchen", "Executions", "3D Models"]
+
   return (
     <section id="projects" className="py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
@@ -90,12 +92,11 @@ function Projects() {
 
         {/* Filters */}
         <div className="flex gap-3 mb-12 text-sm flex-wrap">
-          {["All", "Living", "Bedroom", "Kitchen", "Executions", "3D Models"].map(cat => (
+          {["All", ...categories].map(cat => (
             <button
               key={cat}
               onClick={() => setActive(cat)}
               className={`px-5 py-2 rounded-full border text-xs tracking-wide transition ${
-
                 active === cat
                   ? "bg-black text-white"
                   : "hover:bg-black hover:text-white"
@@ -106,58 +107,72 @@ function Projects() {
           ))}
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-          {items
-            .filter(item => active === "All" || item.category === active)
-            .map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-                className="relative group overflow-hidden cursor-pointer 
-           rounded-xl shadow-lg hover:shadow-2xl transition"
+        {/* Horizontal Galleries */}
+        {categories
+          .filter(cat => active === "All" || active === cat)
+          .map(category => (
+            <div key={category} className="mb-20">
 
-                onClick={() => setSelected(item)}
-              >
-                {item.type === "image" ? (
-  <img
-    loading="lazy"
-    src={item.src}
-    alt={item.title}
-    className="w-full h-[240px] sm:h-[280px] md:h-[300px] object-cover 
-               transition-transform duration-500 group-hover:scale-110"
-  />
-) : (
-  <div className="relative">
-    <video
-      src={item.src}
-      className="w-full h-[240px] sm:h-[280px] md:h-[300px] object-cover"
-      preload="metadata"
-      muted
-    />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="bg-black/60 p-4 rounded-full">
-        ▶
+              <h3 className="text-2xl font-light mb-6">{category}</h3>
+
+              <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
+
+                {items
+                  .filter(item => item.category === category)
+                  .map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6 }}
+                      viewport={{ once: true }}
+                      className="min-w-[260px] sm:min-w-[300px] md:min-w-[340px]
+                                 relative group overflow-hidden cursor-pointer
+                                 rounded-xl shadow-lg hover:shadow-2xl transition
+                                 snap-center"
+                      onClick={() => setSelected(item)}
+                    >
+                      {item.type === "image" ? (
+                        <img
+                          loading="lazy"
+                          src={item.src}
+                          alt={item.title}
+                          className="w-full h-[220px] sm:h-[250px] md:h-[280px]
+                                     object-cover transition-transform duration-500
+                                     group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="relative">
+                          <video
+                            src={item.src}
+                            preload="metadata"
+                            muted
+                            className="w-full h-[220px] sm:h-[250px] md:h-[280px]
+                                       object-cover"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="bg-black/60 text-white px-4 py-2 rounded-full text-sm">
+                              ▶ Play
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="absolute inset-0 bg-black/40 opacity-0
+                                      group-hover:opacity-100 transition flex items-end">
+                        <h4 className="text-white text-sm p-4">
+                          {item.title}
+                        </h4>
+                      </div>
+                    </motion.div>
+                  ))}
+
+              </div>
+            </div>
+          ))}
       </div>
-    </div>
-  </div>
-)}
 
-
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-end">
-                  <h3 className="text-white text-lg p-6">
-                    {item.title}
-                  </h3>
-                </div>
-              </motion.div>
-            ))}
-        </div>
-      </div>
-
-      {/* Fullscreen Modal */}
+      {/* Fullscreen Viewer */}
       {selected && (
         <div
           className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
@@ -165,7 +180,6 @@ function Projects() {
         >
           {selected.type === "image" ? (
             <img
-              loading="lazy"
               src={selected.src}
               alt={selected.title}
               className="max-w-[95%] max-h-[85%]"
@@ -175,6 +189,7 @@ function Projects() {
               src={selected.src}
               controls
               autoPlay
+              preload="auto"
               className="max-w-[95%] max-h-[85%]"
             />
           )}
