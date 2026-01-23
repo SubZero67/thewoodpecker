@@ -13,8 +13,8 @@ function App() {
     <>
       <Navbar />
       <Home />
-      <About/>
       <Projects />
+      <About/>
       <Services />
       <Contact />
 
@@ -38,7 +38,7 @@ function App() {
         <FaInstagram size={26} />
       </a>
       <a
-  href="mailto:thewoodpeckerinteriors@gmail.com"
+  href="mailto:Thewoodpeckerinterio@gmail.com"
   className="fixed bottom-5 right-28 sm:bottom-6 sm:right-32
              bg-gray-800 text-white p-4 rounded-full shadow-lg
              hover:scale-110 transition z-50"
