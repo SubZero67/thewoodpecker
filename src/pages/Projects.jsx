@@ -58,22 +58,21 @@ function AutoScrollRow({ children }) {
 
   const scrollRef = useRef(null)
   const animationRef = useRef(null)
-  const isInteracting = useRef(false)
+  const pausedRef = useRef(false)
 
   useEffect(() => {
 
     const container = scrollRef.current
     if (!container) return
 
-    let speed = window.innerWidth < 768 ? 0.35 : 0.6
+    const speed = window.innerWidth < 768 ? 0.3 : 0.6
 
     const animate = () => {
 
-      if (!isInteracting.current) {
+      if (!pausedRef.current) {
 
         container.scrollLeft += speed
 
-        // infinite loop reset
         if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
           container.scrollLeft = 0
         }
@@ -91,15 +90,28 @@ function AutoScrollRow({ children }) {
   }, [])
 
 
-  // pause on touch / mouse
-  const handleInteractionStart = () => {
-    isInteracting.current = true
+  // convert vertical wheel → horizontal scroll
+  const handleWheel = (e) => {
+
+    const container = scrollRef.current
+    if (!container) return
+
+    pausedRef.current = true
+
+    container.scrollLeft += e.deltaY
+
+    setTimeout(() => {
+      pausedRef.current = false
+    }, 1000)
+
   }
 
-  // resume after delay
-  const handleInteractionEnd = () => {
+
+  const pause = () => pausedRef.current = true
+
+  const resume = () => {
     setTimeout(() => {
-      isInteracting.current = false
+      pausedRef.current = false
     }, 1500)
   }
 
@@ -108,19 +120,20 @@ function AutoScrollRow({ children }) {
 
     <div
       ref={scrollRef}
-      className="flex gap-6 overflow-x-auto no-scrollbar w-full px-4 sm:px-8 cursor-grab active:cursor-grabbing"
+      className="flex gap-6 overflow-x-auto no-scrollbar w-full px-4 sm:px-8"
       
       style={{
-        scrollBehavior: "smooth",
-        WebkitOverflowScrolling: "touch"
+        WebkitOverflowScrolling: "touch",
+        scrollBehavior: "smooth"
       }}
 
-      onMouseDown={handleInteractionStart}
-      onMouseUp={handleInteractionEnd}
-      onMouseLeave={handleInteractionEnd}
+      onWheel={handleWheel}
 
-      onTouchStart={handleInteractionStart}
-      onTouchEnd={handleInteractionEnd}
+      onMouseEnter={pause}
+      onMouseLeave={resume}
+
+      onTouchStart={pause}
+      onTouchEnd={resume}
 
     >
       {children}
@@ -129,6 +142,7 @@ function AutoScrollRow({ children }) {
   )
 
 }
+
 
 
 
@@ -243,7 +257,7 @@ function Projects() {
                                   flex-shrink-0
                                  relative group overflow-hidden cursor-pointer
                                  rounded-xl shadow-lg hover:shadow-2xl transition
-                                 snap-center"
+                                 snap-center relative group"
                       onClick={() => setSelected(item)}
                     >
                       {item.type === "image" ? (
