@@ -57,34 +57,71 @@ import img22 from "../assets/images/media/models3d/img22.jpg"
 function AutoScrollRow({ children }) {
 
   const scrollRef = useRef(null)
+  const animationRef = useRef(null)
+  const isInteracting = useRef(false)
 
   useEffect(() => {
 
     const container = scrollRef.current
-
     if (!container) return
 
-    const interval = setInterval(() => {
+    let speed = window.innerWidth < 768 ? 0.35 : 0.6
 
-      container.scrollLeft += 1
+    const animate = () => {
 
-      // optional reset when reaching end
-      if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
-        container.scrollLeft = 0
+      if (!isInteracting.current) {
+
+        container.scrollLeft += speed
+
+        // infinite loop reset
+        if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+          container.scrollLeft = 0
+        }
+
       }
 
-    }, 20)
+      animationRef.current = requestAnimationFrame(animate)
 
-    return () => clearInterval(interval)
+    }
+
+    animationRef.current = requestAnimationFrame(animate)
+
+    return () => cancelAnimationFrame(animationRef.current)
 
   }, [])
+
+
+  // pause on touch / mouse
+  const handleInteractionStart = () => {
+    isInteracting.current = true
+  }
+
+  // resume after delay
+  const handleInteractionEnd = () => {
+    setTimeout(() => {
+      isInteracting.current = false
+    }, 1500)
+  }
+
 
   return (
 
     <div
       ref={scrollRef}
-      className="flex gap-6 overflow-x-auto no-scrollbar w-full px-12"
-      style={{ scrollBehavior: "smooth" }}
+      className="flex gap-6 overflow-x-auto no-scrollbar w-full px-4 sm:px-8 cursor-grab active:cursor-grabbing"
+      
+      style={{
+        scrollBehavior: "smooth",
+        WebkitOverflowScrolling: "touch"
+      }}
+
+      onMouseDown={handleInteractionStart}
+      onMouseUp={handleInteractionEnd}
+      onMouseLeave={handleInteractionEnd}
+
+      onTouchStart={handleInteractionStart}
+      onTouchEnd={handleInteractionEnd}
+
     >
       {children}
     </div>
@@ -92,6 +129,7 @@ function AutoScrollRow({ children }) {
   )
 
 }
+
 
 
 
