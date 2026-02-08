@@ -1,5 +1,8 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { useRef, useEffect } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
 
 // Normal images (existing)
 import living1 from "../assets/images/projects/living1.jpg"
@@ -29,12 +32,69 @@ import exeVid4 from "../assets/images/media/executions/video4.mp4"
 import exeVid5 from "../assets/images/media/executions/video5.mp4"
 
 // 3D Models images
-import model1 from "../assets/images/media/models3d/img1.jpg"
-import model2 from "../assets/images/media/models3d/img2.jpg"
-import model3 from "../assets/images/media/models3d/img3.jpg"
-import model4 from "../assets/images/media/models3d/img4.jpg"
-import model5 from "../assets/images/media/models3d/img5.jpg"
-import model6 from "../assets/images/media/models3d/img6.jpg"
+import img1 from "../assets/images/media/models3d/img1.jpg"
+import img2 from "../assets/images/media/models3d/img2.jpg"
+import img3 from "../assets/images/media/models3d/img3.jpg"
+import img4 from "../assets/images/media/models3d/img4.jpg"
+import img5 from "../assets/images/media/models3d/img5.jpg"
+import img6 from "../assets/images/media/models3d/img6.jpg"
+
+import img8 from "../assets/images/media/models3d/img8.jpg"
+import img9 from "../assets/images/media/models3d/img9.jpg"
+import img10 from "../assets/images/media/models3d/img10.jpg"
+import img11 from "../assets/images/media/models3d/img11.jpg"
+import img12 from "../assets/images/media/models3d/img12.jpg"
+import img13 from "../assets/images/media/models3d/img13.jpg"
+import img14 from "../assets/images/media/models3d/img14.jpg"
+import img15 from "../assets/images/media/models3d/img15.jpg"
+import img16 from "../assets/images/media/models3d/img16.jpg"
+import img17 from "../assets/images/media/models3d/img17.jpg"
+import img18 from "../assets/images/media/models3d/img18.jpg"
+import img19 from "../assets/images/media/models3d/img19.jpg"
+import img20 from "../assets/images/media/models3d/img20.jpg"
+import img21 from "../assets/images/media/models3d/img21.jpg"
+import img22 from "../assets/images/media/models3d/img22.jpg"
+function AutoScrollRow({ children }) {
+
+  const scrollRef = useRef(null)
+
+  useEffect(() => {
+
+    const container = scrollRef.current
+
+    if (!container) return
+
+    const interval = setInterval(() => {
+
+      container.scrollLeft += 1
+
+      // optional reset when reaching end
+      if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+        container.scrollLeft = 0
+      }
+
+    }, 20)
+
+    return () => clearInterval(interval)
+
+  }, [])
+
+  return (
+
+    <div
+      ref={scrollRef}
+      className="flex gap-6 overflow-x-auto no-scrollbar w-full px-12"
+      style={{ scrollBehavior: "smooth" }}
+    >
+      {children}
+    </div>
+
+  )
+
+}
+
+
+
 
 function Projects() {
   const [active, setActive] = useState("All")
@@ -72,12 +132,27 @@ function Projects() {
     { type: "video", src: exeVid5, title: "Execution Walkthrough 5", category: "Executions" },
 
     // 3D Models
-    { type: "image", src: model1, title: "3D Model Render 1", category: "3D Models" },
-    { type: "image", src: model2, title: "3D Model Render 2", category: "3D Models" },
-    { type: "image", src: model3, title: "3D Model Render 3", category: "3D Models" },
-    { type: "image", src: model4, title: "3D Model Render 4", category: "3D Models" },
-    { type: "image", src: model5, title: "3D Model Render 5", category: "3D Models" },
-    { type: "image", src: model6, title: "3D Model Render 6", category: "3D Models" },
+    { type: "image", src: img1, title: "3D Model 1", category: "3D Models" },
+  { type: "image", src: img2, title: "3D Model 2", category: "3D Models" },
+  { type: "image", src: img3, title: "3D Model 3", category: "3D Models" },
+  { type: "image", src: img4, title: "3D Model 4", category: "3D Models" },
+  { type: "image", src: img5, title: "3D Model 5", category: "3D Models" },
+  { type: "image", src: img6, title: "3D Model 6", category: "3D Models" },
+  { type: "image", src: img8, title: "3D Model 8", category: "3D Models" },
+  { type: "image", src: img9, title: "3D Model 9", category: "3D Models" },
+  { type: "image", src: img10, title: "3D Model 10", category: "3D Models" },
+  { type: "image", src: img11, title: "3D Model 11", category: "3D Models" },
+  { type: "image", src: img12, title: "3D Model 12", category: "3D Models" },
+  { type: "image", src: img13, title: "3D Model 13", category: "3D Models" },
+  { type: "image", src: img14, title: "3D Model 14", category: "3D Models" },
+  { type: "image", src: img15, title: "3D Model 15", category: "3D Models" },
+  { type: "image", src: img16, title: "3D Model 16", category: "3D Models" },
+  { type: "image", src: img17, title: "3D Model 17", category: "3D Models" },
+  { type: "image", src: img18, title: "3D Model 18", category: "3D Models" },
+  { type: "image", src: img19, title: "3D Model 19", category: "3D Models" },
+  { type: "image", src: img20, title: "3D Model 20", category: "3D Models" },
+  { type: "image", src: img21, title: "3D Model 21", category: "3D Models" },
+  { type: "image", src: img22, title: "3D Model 22", category: "3D Models" },
   ]
 
  const categories = ["Living", "Bedroom", "Kitchen", "Executions", "3D Models"]
@@ -115,7 +190,7 @@ function Projects() {
 
               <h3 className="text-2xl font-light mb-6">{category}</h3>
 
-              <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
+              <AutoScrollRow>
 
                 {items
                   .filter(item => item.category === category)
@@ -127,6 +202,7 @@ function Projects() {
                       transition={{ duration: 0.6 }}
                       viewport={{ once: true }}
                       className="min-w-[260px] sm:min-w-[300px] md:min-w-[340px]
+                                  flex-shrink-0
                                  relative group overflow-hidden cursor-pointer
                                  rounded-xl shadow-lg hover:shadow-2xl transition
                                  snap-center"
@@ -167,7 +243,7 @@ function Projects() {
                     </motion.div>
                   ))}
 
-              </div>
+              </AutoScrollRow>
             </div>
           ))}
       </div>

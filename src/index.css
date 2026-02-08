@@ -34,3 +34,11 @@ section {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
